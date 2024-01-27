@@ -35,6 +35,9 @@ app.use('/dashboard',dashboard);
     console.log(err)
     app.use((req,res,next)=>{
         res.status(500).send("Internal Server Error");
+    }).finally(async()=>{
+        await client.close();
+        console.log('Connection to DB closed....')
     })
 })
 
