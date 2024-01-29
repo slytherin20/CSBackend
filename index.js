@@ -2,6 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 const dashboard = require('./routes/dashboard')
+const paints = require('./routes/paints')
+const paintingMedium = require('./routes/paintingMedium');
+const canvas = require('./routes/canvas')
+const brushes = require('./routes/brushes')
+const pensmarkers = require('./routes/pensmarkers')
 const dotenv = require('dotenv');
 dotenv.config()
 const uri = process.env.ENV=='Dev'?process.env.LOCAL_CONNECTION_STRING:null
@@ -29,8 +34,11 @@ app.use((req,res,next)=>{
     next();
 });
 app.use('/dashboard',dashboard);
-
-
+app.use('/Paints',paints);
+app.use('/Painting-Medium',paintingMedium);
+app.use('/Canvas',canvas);
+app.use('/Brushes',brushes);
+app.use('/Pens-and-Markers',pensmarkers)
 }).catch(err=> {
     console.log(err)
     app.use((req,res,next)=>{
