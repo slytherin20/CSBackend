@@ -6,7 +6,6 @@ router.get('/BrandSearch',async (req,res)=>{
     let brand = req.query.brand;
     let db = req.db;
     try{
-
         let dashboard = db.collection('Dashboard');
         let brandsArr = await dashboard.findOne({type:'BrandSearch'});
         brandsArr = brandsArr.data.data;
@@ -30,6 +29,19 @@ router.get('/Categories',async(req,res)=>{
     }
     catch(err){
         console.log(err);
+        res.status(500).send('Internal Server Error');
+    }
+})
+router.post('/BrandSearch',async (req,res)=>{
+    let db = req.db;
+    let brandObj = req.body;
+    try{
+        let dashboard = db.collection('Dashboard');
+        await dashboard.updateOne({type:'BrandSearch'},{$push:{'data.data':brandObj}})
+        res.status(200).send('Brand added')
+    }
+    catch(err){
+        console.log(err)
         res.status(500).send('Internal Server Error');
     }
 })
