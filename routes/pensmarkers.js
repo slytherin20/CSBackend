@@ -89,12 +89,13 @@ router.get('/:id',async (req,res)=>{
 
 })
 router.put('/:id',async (req,res)=>{
-    let updatedCount = req.body.updatedCount;
-    let id = req.params.id;
+    let updatedCount = req.body.count;
+    let status = req.body.status;
+    let id = Number(req.params.id);
     let db = req.db;
     try{
         let coll = db.collection('Pens_and_Markers');
-        await coll.updateOne({'id':id},{$set:{count:updatedCount}});
+        await coll.updateOne({'id':id},{$set:{'count':updatedCount,'status':status }});
         res.status(200).send("Document updated successfully!");
     }
     catch(err){
