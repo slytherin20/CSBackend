@@ -87,5 +87,32 @@ router.get('/:id',async (req,res)=>{
 
 
 })
-
+router.put('/:id',async (req,res)=>{
+    let db = req.db;
+    let updatedCount = req.body.count;
+    let status = req.body.status;
+    let id = Number(req.params.id);
+    try{
+        let coll = db.collection('Paints');
+        await coll.updateOne({'id':id},{$set:{'count':updatedCount,'status':status }});
+        res.status(200).send("Document updated successfully!");
+    }
+    catch(err){
+        console.log(err);
+        res.status(400).send(err)
+    }
+})
+router.post('/',async (req,res)=>{
+    let db = req.db;
+    let details = req.body;
+    try{
+        let coll = db.collection('Paints');
+        await coll.insertOne(details);
+        res.status(200).send('Document inserted!')
+    }
+    catch(err){
+        console.log(err);
+        res.status(400).send(err)
+    }
+})
 module.exports=router

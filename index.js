@@ -7,11 +7,20 @@ const paintingMedium = require('./routes/paintingMedium');
 const canvas = require('./routes/canvas')
 const brushes = require('./routes/brushes')
 const pensmarkers = require('./routes/pensmarkers')
+const images = require('./routes/images')
 const dotenv = require('dotenv');
+const cors = require("cors");
 dotenv.config()
 const uri = process.env.ENV=='Dev'?process.env.LOCAL_CONNECTION_STRING:null
 const app = express();
 const port = process.env.PORT
+app.use(
+    cors({
+      origin:
+        
+          "http://localhost:5000"
+    })
+  );
 
 const client = new MongoClient(uri);
 
@@ -29,6 +38,7 @@ async function connectToDB(){
 connectToDB().then(()=>{
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use((req,res,next)=>{
     req.db = client.db('app_data');
     next();
@@ -39,6 +49,7 @@ app.use('/Painting-Medium',paintingMedium);
 app.use('/Canvas',canvas);
 app.use('/Brushes',brushes);
 app.use('/Pens-and-Markers',pensmarkers)
+app.use('/images',images)
 }).catch(err=> {
     console.log(err)
     app.use((req,res,next)=>{

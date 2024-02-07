@@ -133,3 +133,6 @@ dist
 #Replicaset
 replicaset/
 DBLogs/
+
+#images
+uploads/
