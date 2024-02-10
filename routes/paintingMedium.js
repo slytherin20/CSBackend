@@ -55,7 +55,7 @@ router.get('/Fixative-and-Varnishes',async (req,res)=>{
     }
 
 })
-router.get('/Gessos-and-Grounds ',async (req,res)=>{
+router.get('/Gessos-and-Grounds',async (req,res)=>{
     let db = req.db;
 
     try{  
@@ -74,7 +74,8 @@ router.get('/Gessos-and-Grounds ',async (req,res)=>{
 
 })
 
-router.get('/Acrylic-Auxilaries ',async (req,res)=>{
+router.get('/Acrylic-Auxilaries',async (req,res)=>{
+    
     let db = req.db;
 
     try{  
