@@ -76,12 +76,7 @@ router.get('/Brush-Pens',async (req,res)=>{
 router.get('/:id',async (req,res)=>{
     let db = req.db;
     let val = Number(req.params.id);
-    let tokenId = req.body.tokenId;
     try{
-        let decodedToken = await getAuth().verifyIdToken(tokenId);
-        if(!decodedToken.uidD) {
-            res.status(403).send("Forbidden user");
-        }
         let coll = db.collection('Pens_and_Markers');
         let data = await coll.findOne({'id':val});
         res.status(200).json(data);
