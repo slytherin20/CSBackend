@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const { getAuth } = require('firebase-admin/auth');
 
 router.get('/BrandSearch',async (req,res)=>{
     let brand = req.query.brand;
@@ -32,10 +32,15 @@ router.get('/Categories',async(req,res)=>{
         res.status(500).send('Internal Server Error');
     }
 })
-router.post('/BrandSearch',async (req,res)=>{
+router.post('/BrandSearch',async (req,res)=>{  
     let db = req.db;
-    let brandObj = req.body;
+    let brandObj = req.body.newBrand;
+    let tokenId = req.body.tokenId;
     try{
+        let decodedToken = await getAuth().verifyIdToken(tokenId);
+        if(decodedToken.uid!==process.env.ADMIN_UID) {
+            res.status(403).send("Forbidden user");
+        }
         let dashboard = db.collection('Dashboard');
         await dashboard.updateOne({type:'BrandSearch'},{$push:{'data.data':brandObj}})
         res.status(200).send('Brand added')

@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const { getAuth } = require('firebase-admin/auth');
 dotenv.config()
 const cloudinary = require('cloudinary').v2;
 const router = require('express').Router()
@@ -8,7 +9,12 @@ const upload = multer({'dest':'uploads/'});
 
 router.post('/',upload.single('file'),async (req,res)=>{
     let img = req.file;
-    try{
+    let tokenId = req.body.tokenId;
+    try {
+        let decodedToken = await getAuth().verifyIdToken(tokenId);
+        if(decodedToken.uid!==process.env.ADMIN_UID) {
+            res.status(403).send("Forbidden user");
+        }
 
         let data = await cloudinary.uploader.upload(img.path);
         res.status(200).json({"public_id":data.public_id})

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const { getAuth } = require('firebase-admin/auth');
 
 router.get('/Water-Colour-Mediums',async (req,res)=>{
     let db = req.db;
@@ -113,7 +113,12 @@ router.put('/:id',async (req,res)=>{
     let updatedCount = req.body.count;
     let status = req.body.status;
     let id = Number(req.params.id);
+    let tokenId = req.tokenId;
     try{
+        let decodedToken = await getAuth().verifyIdToken(tokenId);
+        if(!decodedToken.uid) {
+            res.status(403).send("Forbidden user");
+        }
         let coll = db.collection('Painting_Medium');
         await coll.updateOne({'id':id},{$set:{'count':updatedCount,'status':status }});
         res.status(200).send("Document updated successfully!");
@@ -125,8 +130,13 @@ router.put('/:id',async (req,res)=>{
 })
 router.post('/',async (req,res)=>{
     let db = req.db;
-    let details = req.body;
+    let details = req.body.details;
+    let tokenId = req.body.tokenId;
     try{
+        let decodedToken = await getAuth().verifyIdToken(tokenId);
+        if(decodedToken.uid!==process.env.ADMIN_UID) {
+            res.status(403).send("Forbidden user");
+        }
         let coll = db.collection('Painting_Medium');
         await coll.insertOne(details);
         res.status(200).send('Document inserted!')

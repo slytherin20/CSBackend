@@ -8,8 +8,11 @@ const canvas = require('./routes/canvas')
 const brushes = require('./routes/brushes')
 const pensmarkers = require('./routes/pensmarkers')
 const images = require('./routes/images')
+const cart = require('./routes/cart')
 const dotenv = require('dotenv');
 const cors = require("cors");
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebaseAdmin.json');
 dotenv.config()
 const uri = process.env.ENV=='Dev'?process.env.LOCAL_CONNECTION_STRING:null
 const app = express();
@@ -21,8 +24,11 @@ app.use(
           "http://localhost:5000"
     })
   );
-
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+})
 const client = new MongoClient(uri);
+
 
 async function connectToDB(){
     try{
@@ -39,6 +45,7 @@ connectToDB().then(()=>{
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+
 app.use((req,res,next)=>{
     req.db = client.db('app_data');
     next();
@@ -50,6 +57,7 @@ app.use('/Canvas',canvas);
 app.use('/Brushes',brushes);
 app.use('/Pens-and-Markers',pensmarkers)
 app.use('/images',images)
+app.use('/Cart',cart);
 }).catch(err=> {
     console.log(err)
     app.use((req,res,next)=>{
