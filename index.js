@@ -9,6 +9,7 @@ const brushes = require('./routes/brushes')
 const pensmarkers = require('./routes/pensmarkers')
 const images = require('./routes/images')
 const cart = require('./routes/cart')
+const wishlist = require('./routes/wishlist')
 const dotenv = require('dotenv');
 const cors = require("cors");
 const admin = require('firebase-admin');
@@ -58,6 +59,7 @@ app.use('/Brushes',brushes);
 app.use('/Pens-and-Markers',pensmarkers)
 app.use('/images',images)
 app.use('/Cart',cart);
+app.use('/Wishlist',wishlist);
 }).catch(err=> {
     console.log(err)
     app.use((req,res,next)=>{
