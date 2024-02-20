@@ -21,11 +21,13 @@ router.get('/:id',async(req,res)=>{
         let coll = await db.collection('Cart');
         let doc = await coll.findOne({'uid':decodedToken.uid});
         if(doc){
-           let item= doc.cart.find(obj=> obj.id==id)
+           let item= doc.cart.find(obj=> obj.id==id);
+           if(item)
            res.status(200).json(item);
+        else  res.status(200).send([]);
         }
         else{
-            res.status(404).send('Not Found');
+            res.status(500).send('Internal Server Error');
         }
         
     }
