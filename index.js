@@ -10,6 +10,8 @@ const pensmarkers = require('./routes/pensmarkers')
 const images = require('./routes/images')
 const cart = require('./routes/cart')
 const wishlist = require('./routes/wishlist')
+const orders = require('./routes/orders')
+const userInfo = require('./routes/UserInfo')
 const dotenv = require('dotenv');
 const cors = require("cors");
 const admin = require('firebase-admin');
@@ -60,6 +62,8 @@ app.use('/Pens-and-Markers',pensmarkers)
 app.use('/images',images)
 app.use('/Cart',cart);
 app.use('/Wishlist',wishlist);
+app.use('/Orders',orders);
+app.use('/Address',userInfo)
 }).catch(err=> {
     console.log(err)
     app.use((req,res,next)=>{
