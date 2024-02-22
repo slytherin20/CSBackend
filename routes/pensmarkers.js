@@ -90,7 +90,6 @@ router.get('/:id',async (req,res)=>{
 })
 router.put('/:id',async (req,res)=>{
     let updatedCount = req.body.cartCount;
-    let status = req.body.status;
     let id = Number(req.params.id);
     let db = req.db;
     let tokenId = req.body.tokenId;
@@ -100,7 +99,7 @@ router.put('/:id',async (req,res)=>{
             res.status(403).send("Forbidden user");
         }
         let coll = db.collection('Pens_and_Markers');
-        await coll.updateOne({'id':id},{$set:{'count':updatedCount,'status':status }});
+        await coll.updateOne({'id':id},{$set:{'count':Number(updatedCount.count),'status':updatedCount.status }});
         res.status(200).send("Document updated successfully!");
     }
     catch(err){
