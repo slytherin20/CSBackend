@@ -17,7 +17,7 @@ const cors = require("cors");
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseAdmin.json');
 dotenv.config()
-const uri = process.env.ENV=='Dev'?process.env.LOCAL_CONNECTION_STRING:null
+const uri = process.env.ENV=='Dev'?process.env.LOCAL_CONNECTION_STRING:process.env.PROD_STRING
 const app = express();
 const port = process.env.PORT
 app.use(
