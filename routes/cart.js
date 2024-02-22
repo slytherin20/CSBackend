@@ -16,14 +16,14 @@ router.get('/:id',async(req,res)=>{
             }
         }
         else{
-            res.status(401).send('UnAuthorized Request sent')
+            res.status(401).send('UnAuthorized Request sent');
         }
         let coll = await db.collection('Cart');
         let doc = await coll.findOne({'uid':decodedToken.uid});
         if(doc){
            let item= doc.cart.find(obj=> obj.id==id);
            if(item)
-           res.status(200).json(item);
+           res.status(200).json([item]);
         else  res.status(200).send([]);
         }
         else{
@@ -116,7 +116,6 @@ router.delete('/:id',async(req,res)=>{
     let db = req.db;
     let id = Number(req.params.id);
     let tokenId = req.body.tokenId;
-   
     try{
         let decodedToken = await getAuth().verifyIdToken(tokenId);
         if(!decodedToken.uid) {
