@@ -21,8 +21,10 @@ router.get('/:id',async(req,res)=>{
         let coll = await db.collection('Wishlist');
         let doc = await coll.findOne({'uid':decodedToken.uid});
         if(doc){
-            doc.wishlist.find(obj=> obj.id==id)
-           res.status(200).json(doc);
+            let item=doc.wishlist.find(obj=> obj.productId==id);
+            if(item)
+            res.status(200).json(item);
+            else  res.status(200).json(null);
         }
         else{
             res.status(404).send('Not Found');
