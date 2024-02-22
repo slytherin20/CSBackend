@@ -89,10 +89,10 @@ router.get('/:id',async (req,res)=>{
 })
 router.put('/:id',async (req,res)=>{
     let db = req.db;
-    let updatedCount = req.body.count;
+    let updatedCount = req.body.cartCount;
     let status = req.body.status;
     let id = Number(req.params.id);
-    let tokenId = req.tokenId;
+    let tokenId = req.body.tokenId;
     try{
         let decodedToken = await getAuth().verifyIdToken(tokenId);
         if(!decodedToken.uid) {
